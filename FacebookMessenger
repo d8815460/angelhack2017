@@ -1,0 +1,255 @@
+[
+    {
+        "id": "b85e1dd7.48f11",
+        "type": "link in",
+        "z": "594c93f8.d72724",
+        "name": "",
+        "links": [
+            "2817bb05.25f804"
+        ],
+        "x": 75.83333333333333,
+        "y": 51.66666666666666,
+        "wires": [
+            [
+                "9a2b10d3.a8b53"
+            ]
+        ]
+    },
+    {
+        "id": "9a2b10d3.a8b53",
+        "type": "function",
+        "z": "594c93f8.d72724",
+        "name": "",
+        "func": "\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 192.49999618530273,
+        "y": 23.333333015441895,
+        "wires": [
+            [
+                "c93a62c0.cc202",
+                "64b83650.7d5338"
+            ]
+        ]
+    },
+    {
+        "id": "c93a62c0.cc202",
+        "type": "debug",
+        "z": "594c93f8.d72724",
+        "name": "",
+        "active": true,
+        "console": "false",
+        "complete": "true",
+        "x": 424.16666666666663,
+        "y": 31.66666666666666,
+        "wires": []
+    },
+    {
+        "id": "64b83650.7d5338",
+        "type": "function",
+        "z": "594c93f8.d72724",
+        "name": "line to fb output",
+        "func": "msg.payload = {\n    type: 'text',\n    text: msg.payload,\n    user: '1566663023346313',\n};\nmsg.user = '1566663023346313'\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 717.5000076293945,
+        "y": 41.66666603088379,
+        "wires": [
+            [
+                "dd7766fb.f30d48",
+                "379d6343.4f8ee4"
+            ]
+        ]
+    },
+    {
+        "id": "dd7766fb.f30d48",
+        "type": "http response",
+        "z": "594c93f8.d72724",
+        "name": "",
+        "x": 836.9333419799805,
+        "y": 431.7999839782715,
+        "wires": []
+    },
+    {
+        "id": "379d6343.4f8ee4",
+        "type": "debug",
+        "z": "594c93f8.d72724",
+        "name": "",
+        "active": true,
+        "console": "false",
+        "complete": "true",
+        "x": 844.3333473205566,
+        "y": 476.46664237976074,
+        "wires": []
+    },
+    {
+        "id": "d913ff1b.6dc5f8",
+        "type": "function",
+        "z": "594c93f8.d72724",
+        "name": "text output",
+        "func": "msg.payload = {\n    type: 'text',\n    text: msg.payload.output.text[0],\n    user: msg.user,\n};\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 660,
+        "y": 427.2000732421875,
+        "wires": [
+            [
+                "379d6343.4f8ee4",
+                "dd7766fb.f30d48"
+            ]
+        ]
+    },
+    {
+        "id": "32bd76ca.6b891a",
+        "type": "switch",
+        "z": "594c93f8.d72724",
+        "name": "",
+        "property": "payload.intents[0].intent",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "greetings",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "weather",
+                "vt": "str"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "true",
+        "outputs": 3,
+        "x": 273.5999755859375,
+        "y": 308.5999755859375,
+        "wires": [
+            [
+                "d913ff1b.6dc5f8"
+            ],
+            [],
+            [
+                "d913ff1b.6dc5f8"
+            ]
+        ]
+    },
+    {
+        "id": "d0f42e5.b20a3d",
+        "type": "watson-conversation-v1",
+        "z": "594c93f8.d72724",
+        "name": "",
+        "workspaceid": "7b01a0a3-71f5-490e-86e9-56ff26ed3ce4",
+        "multiuser": true,
+        "context": true,
+        "x": 298,
+        "y": 209.00001525878906,
+        "wires": [
+            [
+                "4817060b.ec007",
+                "32bd76ca.6b891a",
+                "b4a89b77.da1e7"
+            ]
+        ]
+    },
+    {
+        "id": "4817060b.ec007",
+        "type": "debug",
+        "z": "594c93f8.d72724",
+        "name": "",
+        "active": true,
+        "console": "false",
+        "complete": "false",
+        "x": 504.00006103515625,
+        "y": 209.4000244140625,
+        "wires": []
+    },
+    {
+        "id": "b4a89b77.da1e7",
+        "type": "debug",
+        "z": "594c93f8.d72724",
+        "name": "",
+        "active": true,
+        "console": "false",
+        "complete": "response",
+        "x": 752,
+        "y": 109,
+        "wires": []
+    },
+    {
+        "id": "a127f924.9edbd8",
+        "type": "watson-tone-analyzer-v3",
+        "z": "594c93f8.d72724",
+        "name": "語調分析",
+        "tones": "all",
+        "sentences": "true",
+        "contentType": "false",
+        "x": 496.5,
+        "y": 107,
+        "wires": [
+            [
+                "b4a89b77.da1e7",
+                "d0f42e5.b20a3d"
+            ]
+        ]
+    },
+    {
+        "id": "92a12788.298378",
+        "type": "function",
+        "z": "594c93f8.d72724",
+        "name": "conversation input",
+        "func": "var message = JSON.parse(msg.req.body);\nmsg.user = message.sender;\nmsg.payload = message.data.text;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 295.59999084472656,
+        "y": 108.19998168945312,
+        "wires": [
+            [
+                "a127f924.9edbd8",
+                "60ae1b13.c092d4"
+            ]
+        ]
+    },
+    {
+        "id": "739e1e04.5f1ee8",
+        "type": "http in",
+        "z": "594c93f8.d72724",
+        "name": "",
+        "url": "/message",
+        "method": "post",
+        "swaggerDoc": "",
+        "x": 97.59999084472656,
+        "y": 107.4000015258789,
+        "wires": [
+            [
+                "92a12788.298378",
+                "d1e765de.762b"
+            ]
+        ]
+    },
+    {
+        "id": "60ae1b13.c092d4",
+        "type": "link out",
+        "z": "594c93f8.d72724",
+        "name": "",
+        "links": [
+            "7b75e530.14f6bc"
+        ],
+        "x": 129.16666666666666,
+        "y": 241.66666666666663,
+        "wires": []
+    },
+    {
+        "id": "d1e765de.762b",
+        "type": "debug",
+        "z": "594c93f8.d72724",
+        "name": "",
+        "active": true,
+        "console": "false",
+        "complete": "true",
+        "x": 268,
+        "y": 67,
+        "wires": []
+    }
+]
